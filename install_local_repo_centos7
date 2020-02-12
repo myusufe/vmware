@@ -1,0 +1,85 @@
+Step 1 – Disable SELinux and Firewall
+
+vi /etc/sysconfig/selinux
+
+systemctl stop firewalld
+systemctl disable firewalld
+
+Step 2 – Mount CentOS 7 media
+
+mount -t iso9660 /dev/sr0 /mnt
+
+cp -rv /mnt/* /data/repos/
+
+Step 4 – Configure the Local Repository
+
+cp -r /etc/yum.repos.d /etc/yum.repos.d-bak
+rm -rf yum.repos.d/*
+vim yum.repos.d/local.repo
+
+[centos7]
+name=centos7
+baseurl=file:///data/repos/
+enabled=1
+gpgcheck=0
+
+#Update local repo
+createrepo /data/repos/
+
+# List repository
+yum repolist all
+
+Step 5 – Test Local Repository
+
+yum clean all
+yum update
+yum install zip
+
+Step 6 – Host RPM Packages
+
+yum install httpd
+systemctl status httpd
+systemctl restart httpd
+systemctl enable httpd
+
+vi /etc/httpd/conf/httpd.conf
+
+DocumentRoot "/data/repos"
+
+Options All Indexes FollowSymLinks
+
+systemctl restart httpd
+
+#Check URL
+
+http://192.168.128.150
+
+Step 6 – Configure VM Repository
+
+Login into VM which want to use local repo
+
+#rm -rf /etc/yum.repos.d/*
+
+vi /etc/yum.repos.d/localrepo.repo
+
+[localrepo]
+name=Centos7 Repository
+baseurl=http://192.168.128.150
+gpgcheck=0
+enabled=1
+
+# check repo
+yum clean all
+yum repolist
+yum update
+
+#!/bin/bash
+
+Step 7 - Update local repo with external
+
+reposync -n -c /etc/yum/yum_sync.conf -p /repos/centos6 -d -r base -r updates -r extras -r centosplus -r contrib
+createrepo -g /repos/centos6/base/repodata/comps.xml /repos/centos6/base
+createrepo /repos/centos6/updates
+createrepo /repos/centos6/extras
+createrepo /repos/centos6/centosplus
+
