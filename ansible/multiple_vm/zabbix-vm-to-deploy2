@@ -1,0 +1,5 @@
+[zabbix-server]
+zabbix01 deploy_vsphere_datastore='vsanDatastore' guest_template='zabbix01_ubuntu1604_template' guest_custom_ip='172.40.30.113' guest_network2='VM Network' guest_custom_ip2='172.20.254.247' guest_gateway2='172.20.254.1' guest_notes='Zabbix Server 01'
+
+[grafana-server]
+grafana deploy_vsphere_datastore='vsanDatastore' guest_template='grafana_ubuntu1604_template' guest_custom_ip='172.40.30.117' guest_network2='VM Network' guest_custom_ip2='172.20.254.248' guest_gateway2='172.20.254.1' guest_notes='Grafana Server'

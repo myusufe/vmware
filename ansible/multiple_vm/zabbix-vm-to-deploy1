@@ -1,0 +1,9 @@
+[zabbix-db]
+zabbixdb02 deploy_vsphere_datastore='vsanDatastore' guest_template='zabbixdb02_ubuntu1604_template' guest_custom_ip='172.40.30.116' guest_notes='Zabbix DB 02'
+zabbixdb01 deploy_vsphere_datastore='vsanDatastore' guest_template='zabbixdb01_ubuntu1604_template' guest_custom_ip='172.40.30.115' guest_notes='Zabbix DB 01'
+
+[zabbix-server]
+zabbix02 deploy_vsphere_datastore='vsanDatastore' guest_template='zabbix02_ubuntu1604_template' guest_custom_ip='172.40.30.114' guest_notes='Zabbix Server 02'
+
+[zabbix-proxy]
+zabbixproxy01 deploy_vsphere_datastore='vsanDatastore' guest_template='zabbixproxy01_ubuntu1604_template' guest_custom_ip='172.40.30.118' guest_notes='Zabbix Proxy Server 01'
