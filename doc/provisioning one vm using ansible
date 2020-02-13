@@ -1,0 +1,39 @@
+---
+- hosts: localhost 
+  gather_facts: false
+  connection: local 
+  vars:
+    vcenter_server: "vcenter.akaicloud.com"
+    vcenter_user: "administrator@akaicloud.com"
+    vcenter_pass: "password"
+    datacenter_name: "Datacenter01"
+    cluster_name: "Cluster01"
+  tasks:
+  - name: Clone the template
+    vmware_guest:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: test_vm_using_ansible 
+      template: ubuntu1604_template_16GB 
+      datacenter: "{{ datacenter_name }}"
+      folder: '/{{ datacenter_name }}/vm/ansible_test'
+      cluster: "{{ cluster_name }}"
+      datastore: "vsanDatastore"
+      networks:
+      - name: VM Network
+        ip: 192.168.128.155
+        netmask: 255.255.255.0
+        gateway: 192.168.128.1
+        type: static
+        dns_servers: 192.168.125.53
+      customization:
+        hostname: "web02.akaicloud.com"
+        dns_servers:
+        - 192.168.125.53
+        - 192.168.125.54
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    

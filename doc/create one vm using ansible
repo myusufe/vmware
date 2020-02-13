@@ -1,0 +1,9 @@
+Create yml file
+
+example : test.yml
+
+#single vm
+ansible-playbook test.yml
+
+#for host list
+ansible-playbook -i vms-to-deploy deploy-zabbix.yml
