@@ -3,10 +3,10 @@
 deploy_vsphere_vcenter: 'vcenter.akaicloud.com'
 deploy_vsphere_user: 'administrator@akaicloud.com'
 deploy_vsphere_password: 'password'
-deploy_vsphere_datacenter: 'Datacenter'
-deploy_vsphere_folder: 'Datacenter/vm/Zabbix Cluster Test'
+deploy_vsphere_datacenter: 'Datacenter01'
+deploy_vsphere_folder: 'Datacenter01/vm/ansible_test'
 deploy_vsphere_cluster: 'Cluster01'
-deploy_vsphere_resourcepool: 'Zabbix Test'
+deploy_vsphere_resourcepool: 'Zabbix test'
 
 # Guest
 # - Describes virtual machine common options
