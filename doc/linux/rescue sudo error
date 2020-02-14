@@ -1,0 +1,15 @@
+#!/bin/bash
+
+fdisk -lu
+pvscan
+vgscan
+vgchange -a y
+lvscan
+mount /dev/ubuntu-vg/root /mnt
+mount --bind /dev /mnt/dev
+mount --bind /proc /mnt/proc
+mount --bind /sys /mnt/sys
+mount /dev/sda2 /mnt/boot
+mkdir /mnt/boot/efi || true
+mount /dev/sda1 /mnt/boot/efi
+chroot /mnt

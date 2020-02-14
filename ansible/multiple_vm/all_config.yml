@@ -1,7 +1,7 @@
 # Infrastructure
 # - Defines the vCenter / vSphere environment
 deploy_vsphere_vcenter: 'vcenter.akaicloud.com'
-deploy_vsphere_user: 'administrator@akaiclodu.com'
+deploy_vsphere_user: 'administrator@akaicloud.com'
 deploy_vsphere_password: 'password'
 deploy_vsphere_datacenter: 'Datacenter'
 deploy_vsphere_folder: 'Datacenter/vm/Zabbix Cluster Test'
