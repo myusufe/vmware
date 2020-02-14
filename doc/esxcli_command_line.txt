@@ -1,0 +1,256 @@
+
+#Check esxcli command 
+
+which esxcli
+
+esxcli esxcli command list
+
+#Check hardware
+
+1. View installed PCI devices
+
+esxcli hardware pci list | more
+
+2. Check the amount of memory and CPU installed on the ESXi server:
+
+esxcli hardware memory get
+
+esxcli hardware cpu list
+
+3. Check hardware clock
+
+esxcli hardware clock get
+
+4. Check boot devices info
+
+esxcli hardware bootdevice list
+
+
+#
+#System settings
+#
+
+1. Check the precise ESXi version and build number,
+   including the number of installed updated and patches:
+
+esxcli system version get
+
+2. Check the hostname of an ESXi server:
+
+esxcli system hostname get
+
+3. Check the ESXi installation time:
+
+esxcli system stats installtime get
+
+4. Check the SNMP configuration:
+
+esxcli system snmp get
+
+5. Enter the ESXi host to the maintenance mode:
+
+esxcli system maintenanceMode set --enable yes
+
+Exit the maintenance mode:
+
+6. esxcli system maintenanceMode set --enable no
+
+After entering an ESXi host to the maintenance mode, you can shut down or reboot the host.
+
+7. Power off an ESXi host:
+
+esxcli system shutdown poweroff
+
+8. The command for rebooting the host is similar:
+
+esxcli system shutdown reboot
+
+9. You can also set a delay and write a reason of rebooting the host to be saved in system logs:
+
+esxcli system shutdown reboot -d 60 -r “Installing patches”
+
+In this example, the delay is 60 seconds.
+
+10. The custom message 
+It can be used for hiding information about your ESXi host on the display connected to the ESXi host when a user is not logged in.
+esxcli system welcomemsg set -m="Welcome to NAKIVO! Press F2"
+Verify whether the welcome message is already set:
+
+esxcli system welcomemsg get
+
+
+
+
+#
+# Network settings
+#
+
+1. Check the status of active network connections:
+
+esxcli network ip connection list
+
+2. View the list of installed network adapters:
+
+esxcli network nic list
+
+3. Display the information about network interfaces:
+
+esxcli network ip interface list
+
+4. Display the information about IP addresses of the network interfaces that are present on the server:
+
+esxcli network ip interface ipv4 get
+
+5. Display the network information for VMs:
+
+esxcli network vm list
+
+6. View the domain search settings:
+
+esxcli network ip dns search list
+
+7. View the DNS servers set in the network settings:
+
+esxcli network ip dns server list
+
+8. List virtual switches and port groups:
+
+esxcli network vswitch standard list
+
+9. Show statistics for the vmnic0 network interface:
+
+esxcli network nic stats get -n vmnic0
+
+10. Check the firewall status and rule settings:
+
+esxcli network firewall get
+
+esxcli network firewall ruleset list
+
+Note: The default firewall policy is to drop traffic if the opposite rules are not set.
+
+11. You can temporary disable the firewall on an ESXi host for troubleshooting:
+
+esxcli network firewall set --enabled false
+
+12. The firewall must be enabled with the command:
+
+esxcli network firewall set --enabled true
+
+
+
+
+#
+# Storage
+#
+
+1. Check the information about mounted VMFS volumes:
+
+esxcli storage vmfs extent list
+
+2. View mappings of VMFS file systems to disk devices:
+
+esxcli storage filesystem list
+
+3. List all the iSCSI paths on the system:
+
+esxcli storage core path list
+
+4. Display the list of mounted NFS shares:
+
+esxcli storage nfs list
+
+
+
+
+
+
+
+#
+# iSCSI
+#
+
+1. Show the list of available iSCSI adapters:
+
+esxcli iscsi adapter list
+
+2. Re-discover and re-scan iSCSI adapters:
+
+esxcli iscsi adapter discovery rediscover -A adapter_name
+
+esxcli storage core adapter rescan -A adapter_name
+
+Instead of -A adapter_name you can rescan all adapters by using the --all option
+
+
+
+
+
+#
+# Software
+#
+
+You can view the list of VIB packages installed on your ESXi host:
+
+esxcli software vib list
+
+You can install a VIB with ESXCLI (the ESXi host must be in maintenance mode):
+
+esxcli software vib install -d /vmfs/volumes/datastore1/patches/patch_name.zip
+
+
+
+#
+# Managing users on an ESXi host from CLI 
+#
+
+1.) Add user kb with description systemadmin
+[root@localhost:~] esxcli system account add -d "systemadmin" -i kb -p -c
+Enter value for 'password':
+Enter value for 'password-confirmation':
+
+ 2.) List newly created users:
+[root@localhost:~] esxcli system account list
+
+3.) List permissions:
+[root@localhost:~] esxcli system permission list
+
+ 4.) Assign new permissions to newly created user kb:
+[root@localhost:~] esxcli system permission set -i kb -r Admin
+
+6.) Remove the account
+[root@esxi01:~] esxcli system account remove -i kb
+
+
+
+
+
+
+
+
+#
+# VM operations
+#
+
+1. Check the list of running VMs and display their World IDs:
+
+esxcli vm process list
+
+2. Shutdown the VM
+by using the World ID displayed in the output of the esxcli vm process list command. 
+In the current example, the World ID of the necessary VM is 75498.
+
+esxcli vm process kill -w 75498 -t soft
+
+If the soft command type was not helpful, 
+consider performing an immediate shutdown of the VM by using the hard method.
+
+esxcli vm process kill -w 75498 -t hard
+
+There are three available command options for the kill command:
+
+soft - a correct signal is sent in the guest operating system to shut down a VM correctly;
+hard - a VM is shut down immediately;
+force - VM is powered off similarly to how a computer is powered off when unplugging the power cable. Only use this type of powering off the VM if the previous two types were unsuccessful.
+
+
