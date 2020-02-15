@@ -1,0 +1,22 @@
+
+1. Create VM from OVA file
+
+vm_network_portgrup=akaicloud-lab1
+vm_network_ipaddress=192.168.135.157
+vm_network_netmask=255.255.255.0
+vm_network_gateway=192.168.135.1
+VM_HOST_SERVER=server01.akaicloud.com
+vm_datastore=vsanDatastore
+vcenter_hostname=vcenter.akaicloud.com
+vcenter_datacenter=Datacenter01
+vm_resource_pool=/host/Cluster01/Resources/test
+OVA_FILE=myvm.ova
+vm_name=test_from_ovftool
+
+ovftool --X:logFile=upload.log --X:logLevel=verbose --noSSLVerify \
+--allowExtraConfig --powerOn --network=$vm_network_portgrup \
+--prop:avi.mgmt-ip.CONTROLLER=$vm_network_ipaddress \
+--prop:avi.mgmt-mask.CONTROLLER=$vm_network_netmask \
+--prop:avi.default-gw.CONTROLLER=$vm_network_gateway \
+--name=$vm_name --datastore=$vm_datastore \
+--acceptAllEulas $OVA_FILE vi://$vcenter_username@$vcenter_hostname/$vcenter_datacenter$vm_resource_pool
