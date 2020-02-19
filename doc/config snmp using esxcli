@@ -1,0 +1,6 @@
+esxcli system snmp set -r
+esxcli system snmp set -c YOUR_STRING
+esxcli system snmp set -p 161
+esxcli system snmp set -L "City, State, Country"
+esxcli system snmp set -C noc@example.com
+esxcli system snmp set -e yes
